@@ -1,5 +1,6 @@
 {
-  "description": "Next Thing Co. C.H.I.P. Single Board Computer Build Configurations (Yocto 6.0)",
+  "version": "1.0",
+  "description": "Next Thing Co. C.H.I.P. Single Board Computer Build Configurations (Yocto 6.0 Wrynose)",
   "sources": {
     "bitbake": {
       "git-remote": {
@@ -8,9 +9,9 @@
             "uri": "https://git.openembedded.org/bitbake"
           }
         },
+        "branch": "master",
         "rev": "master"
-      },
-      "path": "bitbake"
+      }
     },
     "openembedded-core": {
       "git-remote": {
@@ -19,9 +20,9 @@
             "uri": "https://git.openembedded.org/openembedded-core"
           }
         },
+        "branch": "master",
         "rev": "master"
-      },
-      "path": "openembedded-core"
+      }
     },
     "meta-yocto": {
       "git-remote": {
@@ -30,9 +31,9 @@
             "uri": "https://git.yoctoproject.org/meta-yocto"
           }
         },
+        "branch": "master",
         "rev": "master"
-      },
-      "path": "meta-yocto"
+      }
     },
     "meta-openembedded": {
       "git-remote": {
@@ -41,9 +42,9 @@
             "uri": "https://git.openembedded.org/meta-openembedded"
           }
         },
+        "branch": "master",
         "rev": "master"
-      },
-      "path": "meta-openembedded"
+      }
     },
     "meta-chip": {
       "git-remote": {
@@ -52,15 +53,17 @@
             "uri": "https://github.com/my-chip/meta-chip-6.0"
           }
         },
+        "branch": "master",
         "rev": "master"
-      },
-      "path": "meta-chip"
+      }
     }
   },
   "bitbake-setup": {
     "configurations": [
       {
-        "description": "Next Thing Co. C.H.I.P. Board Support Configurations",
+        "name": "chip-poky-nand",
+        "description": "C.H.I.P. with Poky Distro targeting Onboard NAND Flash (UBI/UBIFS)",
+        "setup-dir-name": "chip-poky-nand",
         "bb-layers": [
           "openembedded-core/meta",
           "meta-yocto/meta-poky",
@@ -70,41 +73,57 @@
           "meta-openembedded/meta-networking",
           "meta-chip"
         ],
-        "configurations": [
-          {
-            "name": "chip-poky-nand",
-            "description": "C.H.I.P. with Poky Distro for Onboard NAND Flash (UBI/UBIFS)",
-            "oe-fragments": [
-              "machine/chip",
-              "distro/poky",
-              "storage/chip-nand"
-            ]
-          },
-          {
-            "name": "chip-poky-sd-usb",
-            "description": "C.H.I.P. with Poky Distro for MicroSD Breakout / USB Boot (ext4/wic)",
-            "oe-fragments": [
-              "machine/chip",
-              "distro/poky",
-              "storage/chip-sd-usb"
-            ]
-          },
-          {
-            "name": "chip-nodistro-nand",
-            "description": "C.H.I.P. Minimal OpenEmbedded (nodistro) for Onboard NAND Flash",
-            "oe-fragments": [
-              "machine/chip",
-              "storage/chip-nand"
-            ]
-          },
-          {
-            "name": "chip-nodistro-sd-usb",
-            "description": "C.H.I.P. Minimal OpenEmbedded (nodistro) for MicroSD / USB Boot",
-            "oe-fragments": [
-              "machine/chip",
-              "storage/chip-sd-usb"
-            ]
-          }
+        "oe-fragments": [
+          "machine/chip",
+          "distro/poky",
+          "storage/chip-nand"
+        ]
+      },
+      {
+        "name": "chip-poky-sd-usb",
+        "description": "C.H.I.P. with Poky Distro targeting MicroSD Breakout / USB Boot (ext4/wic)",
+        "setup-dir-name": "chip-poky-sd-usb",
+        "bb-layers": [
+          "openembedded-core/meta",
+          "meta-yocto/meta-poky",
+          "meta-yocto/meta-yocto-bsp",
+          "meta-openembedded/meta-oe",
+          "meta-openembedded/meta-python",
+          "meta-openembedded/meta-networking",
+          "meta-chip"
+        ],
+        "oe-fragments": [
+          "machine/chip",
+          "distro/poky",
+          "storage/chip-sd-usb"
+        ]
+      },
+      {
+        "name": "chip-nodistro-nand",
+        "description": "C.H.I.P. Minimal OpenEmbedded (nodistro) targeting Onboard NAND Flash (UBI/UBIFS)",
+        "setup-dir-name": "chip-nodistro-nand",
+        "bb-layers": [
+          "openembedded-core/meta",
+          "meta-openembedded/meta-oe",
+          "meta-chip"
+        ],
+        "oe-fragments": [
+          "machine/chip",
+          "storage/chip-nand"
+        ]
+      },
+      {
+        "name": "chip-nodistro-sd-usb",
+        "description": "C.H.I.P. Minimal OpenEmbedded (nodistro) targeting MicroSD / USB Boot",
+        "setup-dir-name": "chip-nodistro-sd-usb",
+        "bb-layers": [
+          "openembedded-core/meta",
+          "meta-openembedded/meta-oe",
+          "meta-chip"
+        ],
+        "oe-fragments": [
+          "machine/chip",
+          "storage/chip-sd-usb"
         ]
       }
     ]

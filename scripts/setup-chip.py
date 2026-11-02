@@ -112,54 +112,53 @@ def generate_setup_json(repo_root, selected_config, nand_variant, branch):
     config_info = CONFIGURATIONS[selected_config]
     nand_info = NAND_VARIANTS[nand_variant]
 
+    # Determine bb-layers based on distro (nodistro needs fewer layers)
+    if config_info["distro"] == "poky":
+        bb_layers = [
+            "openembedded-core/meta",
+            "meta-yocto/meta-poky",
+            "meta-yocto/meta-yocto-bsp",
+            "meta-openembedded/meta-oe",
+            "meta-openembedded/meta-python",
+            "meta-openembedded/meta-networking",
+            "meta-chip",
+        ]
+    else:
+        bb_layers = [
+            "openembedded-core/meta",
+            "meta-openembedded/meta-oe",
+            "meta-chip",
+        ]
+
+    def make_source(uri, rev):
+        return {
+            "git-remote": {
+                "remotes": {"origin": {"uri": uri}},
+                "branch": rev,
+                "rev": rev,
+            }
+        }
+
+    sources = {
+        "bitbake": make_source("https://git.openembedded.org/bitbake", rev_name),
+        "openembedded-core": make_source("https://git.openembedded.org/openembedded-core", rev_name),
+        "meta-openembedded": make_source("https://git.openembedded.org/meta-openembedded", rev_name),
+        "meta-chip": make_source("https://github.com/my-chip/meta-chip-6.0", "master"),
+    }
+    if config_info["distro"] == "poky":
+        sources["meta-yocto"] = make_source("https://git.yoctoproject.org/meta-yocto", rev_name)
+
     setup_data = {
+        "version": "1.0",
         "description": f"Next Thing Co. C.H.I.P. - {config_info['name']} ({branch[1]})",
-        "sources": {
-            "bitbake": {
-                "git-remote": {
-                    "remotes": {"origin": {"uri": "https://git.openembedded.org/bitbake"}},
-                    "rev": rev_name,
-                },
-                "path": "bitbake",
-            },
-            "openembedded-core": {
-                "git-remote": {
-                    "remotes": {"origin": {"uri": "https://git.openembedded.org/openembedded-core"}},
-                    "rev": rev_name,
-                },
-                "path": "openembedded-core",
-            },
-            "meta-yocto": {
-                "git-remote": {
-                    "remotes": {"origin": {"uri": "https://git.yoctoproject.org/meta-yocto"}},
-                    "rev": rev_name,
-                },
-                "path": "meta-yocto",
-            },
-            "meta-openembedded": {
-                "git-remote": {
-                    "remotes": {"origin": {"uri": "https://git.openembedded.org/meta-openembedded"}},
-                    "rev": rev_name,
-                },
-                "path": "meta-openembedded",
-            },
-        },
+        "sources": sources,
         "bitbake-setup": {
             "configurations": [
                 {
                     "name": config_info["id"],
                     "description": config_info["description"],
-                    "bb-layers": [
-                        "openembedded-core/meta",
-                        "meta-yocto/meta-poky",
-                        "meta-yocto/meta-yocto-bsp",
-                        "meta-openembedded/meta-oe",
-                        "meta-openembedded/meta-python",
-                        "meta-openembedded/meta-networking",
-                    ],
-                    "bb-layers-file-relative": [
-                        ".."
-                    ],
+                    "setup-dir-name": config_info["id"],
+                    "bb-layers": bb_layers,
                     "oe-fragments": config_info["fragments"],
                 }
             ]
