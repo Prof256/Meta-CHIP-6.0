@@ -50,7 +50,7 @@
       "git-remote": {
         "remotes": {
           "origin": {
-            "uri": "https://github.com/my-chip/meta-chip-6.0"
+            "uri": "https://github.com/Prof256/meta-chip-6.0"
           }
         },
         "branch": "master",
