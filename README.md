@@ -26,11 +26,6 @@ We provide an interactive wizard script to guide you through selecting your pref
 ```bash
 ./setup.sh
 ```
-
-### Windows
-```cmd
-setup.bat
-```
 *(Or directly with Python 3: `python scripts/setup-chip.py`)*
 
 ### Wizard Choices Provided
