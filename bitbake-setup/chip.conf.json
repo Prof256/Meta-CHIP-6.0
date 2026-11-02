@@ -9,8 +9,8 @@
             "uri": "https://git.openembedded.org/bitbake"
           }
         },
-        "branch": "master",
-        "rev": "master"
+        "branch": "2.18",
+        "rev": "2.18"
       }
     },
     "openembedded-core": {
@@ -20,8 +20,8 @@
             "uri": "https://git.openembedded.org/openembedded-core"
           }
         },
-        "branch": "master",
-        "rev": "master"
+        "branch": "wrynose",
+        "rev": "wrynose"
       }
     },
     "meta-yocto": {
@@ -31,8 +31,8 @@
             "uri": "https://git.yoctoproject.org/meta-yocto"
           }
         },
-        "branch": "master",
-        "rev": "master"
+        "branch": "wrynose",
+        "rev": "wrynose"
       }
     },
     "meta-openembedded": {
@@ -42,8 +42,8 @@
             "uri": "https://git.openembedded.org/meta-openembedded"
           }
         },
-        "branch": "master",
-        "rev": "master"
+        "branch": "wrynose",
+        "rev": "wrynose"
       }
     },
     "meta-chip": {

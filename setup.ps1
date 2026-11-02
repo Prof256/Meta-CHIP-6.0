@@ -31,12 +31,18 @@ if ($profileChoice -eq "1" -or $profileChoice -eq "3") {
 }
 
 Write-Host "`nSelect Yocto Release Branch:" -ForegroundColor Yellow
-Write-Host "  [1] master / wrynose (Yocto 6.0 Development / Latest) (Recommended)"
-Write-Host "  [2] scarthgap (Yocto 5.0 LTS)"
+Write-Host "  [1] wrynose (Yocto 6.0 - Stable LTS) (Recommended)"
+Write-Host "  [2] master  (Yocto Development - Latest, currently 6.1+)"
+Write-Host "  [3] scarthgap (Yocto 5.0 LTS - Previous LTS)"
 $branchChoice = Read-Host "`nEnter branch choice [1]"
 if ([string]::IsNullOrWhiteSpace($branchChoice)) { $branchChoice = "1" }
 
-$rev = if ($branchChoice -eq "2") { "scarthgap" } else { "master" }
+# BitBake has its own versioned branch separate from OE layer branches
+switch ($branchChoice) {
+    "2"     { $rev = "master";    $bbRev = "master" }
+    "3"     { $rev = "scarthgap"; $bbRev = "2.8" }
+    default { $rev = "wrynose";   $bbRev = "2.18" }
+}
 
 $wifiInput = Read-Host "`nEnable Realtek RTL8723BS Wi-Fi and Bluetooth? (Y/n) [Y]"
 $enableWifi = $wifiInput -notmatch "^[nN]"
@@ -101,7 +107,7 @@ function New-Source($uri, $branch) {
 
 # Build sources (nodistro doesn't need meta-yocto)
 $sources = [ordered]@{
-    "bitbake"           = New-Source "https://git.openembedded.org/bitbake" $rev
+    "bitbake"           = New-Source "https://git.openembedded.org/bitbake" $bbRev
     "openembedded-core" = New-Source "https://git.openembedded.org/openembedded-core" $rev
     "meta-openembedded" = New-Source "https://git.openembedded.org/meta-openembedded" $rev
     "meta-chip"         = New-Source "https://github.com/my-chip/meta-chip-6.0" "master"

@@ -72,8 +72,16 @@ NAND_VARIANTS = {
 }
 
 BRANCHES = {
-    "1": ("master", "Yocto 6.0 Wrynose (Development / Latest)"),
-    "2": ("scarthgap", "Yocto 5.0 Scarthgap (Current LTS)"),
+    "1": ("wrynose", "Yocto 6.0 Wrynose (Stable / LTS)"),
+    "2": ("master",  "Yocto Development (Latest, currently 6.1+)"),
+    "3": ("scarthgap", "Yocto 5.0 Scarthgap (Previous LTS)"),
+}
+
+# BitBake branch is versioned independently from the OE layer branches
+BITBAKE_BRANCH = {
+    "wrynose":   "2.18",
+    "master":    "master",
+    "scarthgap": "2.8",
 }
 
 
@@ -139,8 +147,11 @@ def generate_setup_json(repo_root, selected_config, nand_variant, branch):
             }
         }
 
+    # BitBake is versioned on its own branch separate from the OE layer branches
+    bb_branch = BITBAKE_BRANCH.get(rev_name, "master")
+
     sources = {
-        "bitbake": make_source("https://git.openembedded.org/bitbake", rev_name),
+        "bitbake": make_source("https://git.openembedded.org/bitbake", bb_branch),
         "openembedded-core": make_source("https://git.openembedded.org/openembedded-core", rev_name),
         "meta-openembedded": make_source("https://git.openembedded.org/meta-openembedded", rev_name),
         "meta-chip": make_source("https://github.com/Prof256/meta-chip-6.0", "main"),
@@ -212,7 +223,7 @@ def main():
     parser = argparse.ArgumentParser(description="Next Thing Co. C.H.I.P. Yocto 6.0 Setup Assistant")
     parser.add_argument("--profile", choices=list(CONFIGURATIONS.keys()), help="Configuration profile (1-4)")
     parser.add_argument("--nand", choices=list(NAND_VARIANTS.keys()), default="1", help="NAND chip variant (1-2)")
-    parser.add_argument("--branch", choices=list(BRANCHES.keys()), default="1", help="Yocto branch (1=master, 2=scarthgap)")
+    parser.add_argument("--branch", choices=list(BRANCHES.keys()), default="1", help="Yocto branch (1=wrynose/6.0, 2=master/latest, 3=scarthgap/5.0)")
     parser.add_argument("--no-wifi", action="store_true", help="Disable Wi-Fi/Bluetooth drivers")
     parser.add_argument("--init", action="store_true", help="Directly run bitbake-setup init after configuring")
     parser.add_argument("--list", action="store_true", help="List available configuration profiles and exit")
@@ -234,8 +245,7 @@ def main():
         nand_choice = "1"
         if CONFIGURATIONS[cfg_choice]["storage"] == "nand":
             nand_choice = prompt_choice("Select Onboard NAND Flash Type:", NAND_VARIANTS, default_key="1")
-        branch_choice = prompt_choice("Select Yocto Release Branch:", BRANCHES, default_key="1")
-        wifi_in = input("\nEnable Realtek RTL8723BS Wi-Fi & Bluetooth? (Y/n) [Y]: ").strip().lower()
+        branch_choice = prompt_choice("Select Yocto Release Branch:", BRANCHES, default_key="1")        wifi_in = input("\nEnable Realtek RTL8723BS Wi-Fi & Bluetooth? (Y/n) [Y]: ").strip().lower()
         enable_wifi = wifi_in not in ["n", "no"]
     else:
         cfg_choice = args.profile
