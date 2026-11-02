@@ -245,7 +245,8 @@ def main():
         nand_choice = "1"
         if CONFIGURATIONS[cfg_choice]["storage"] == "nand":
             nand_choice = prompt_choice("Select Onboard NAND Flash Type:", NAND_VARIANTS, default_key="1")
-        branch_choice = prompt_choice("Select Yocto Release Branch:", BRANCHES, default_key="1")        wifi_in = input("\nEnable Realtek RTL8723BS Wi-Fi & Bluetooth? (Y/n) [Y]: ").strip().lower()
+        branch_choice = prompt_choice("Select Yocto Release Branch:", BRANCHES, default_key="1") 
+        wifi_in = input("\nEnable Realtek RTL8723BS Wi-Fi & Bluetooth? (Y/n) [Y]: ").strip().lower()
         enable_wifi = wifi_in not in ["n", "no"]
     else:
         cfg_choice = args.profile
