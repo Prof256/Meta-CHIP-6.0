@@ -166,7 +166,7 @@ def generate_setup_json(repo_root, selected_config, nand_variant, branch):
         },
     }
 
-    out_path = repo_root / "bitbake-setup" / f"{config_info['id']}.json"
+    out_path = repo_root / "bitbake-setup" / f"{config_info['id']}.conf.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(setup_data, f, indent=2)
