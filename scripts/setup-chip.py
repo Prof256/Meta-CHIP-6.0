@@ -78,7 +78,7 @@ BRANCHES = {
 
 
 def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
+    os.system("clear")
 
 
 def prompt_choice(title, options_dict, default_key="1"):
