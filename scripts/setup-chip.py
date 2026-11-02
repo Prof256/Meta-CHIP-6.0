@@ -143,7 +143,7 @@ def generate_setup_json(repo_root, selected_config, nand_variant, branch):
         "bitbake": make_source("https://git.openembedded.org/bitbake", rev_name),
         "openembedded-core": make_source("https://git.openembedded.org/openembedded-core", rev_name),
         "meta-openembedded": make_source("https://git.openembedded.org/meta-openembedded", rev_name),
-        "meta-chip": make_source("https://github.com/Prof256/meta-chip-6.0", "master"),
+        "meta-chip": make_source("https://github.com/Prof256/meta-chip-6.0", "main"),
     }
     if config_info["distro"] == "poky":
         sources["meta-yocto"] = make_source("https://git.yoctoproject.org/meta-yocto", rev_name)
