@@ -268,17 +268,32 @@ def main():
     print("=" * 60)
     print(f"  * Generated bitbake-setup config: {json_path}")
     print(f"  * Generated local.conf sample:   {snippet_path}")
+    # Prefer the venv we are already running inside; otherwise assume the
+    # default location created by scripts/install-meta-chip.sh.
+    active_venv = os.environ.get("VIRTUAL_ENV")
+    venv_dir = Path(active_venv) if active_venv else Path.home() / ".yocto-chip-venv"
+    venv_active = bool(active_venv)
+    activate_cmd = f". {venv_dir}/bin/activate"
+
     print("\nNext Steps:")
     print("------------------------------------------------------------")
-    print("Option A: Using modern 'bitbake-setup' (Automated)")
-    print("  1. bitbake-setup is installed in ~/.yocto-chip-venv and is already")
-    print("     active when launched via scripts/install-meta-chip.sh.")
-    print("     In a fresh shell, activate it first:")
-    print("       . ~/.yocto-chip-venv/bin/activate")
-    print(f"  2. Initialize your workspace pointing to the generated template:")
+
+    # --- Prerequisite, stated once and unambiguously -------------------------
+    if venv_active:
+        print(f"  [READY] Virtualenv is already active: {venv_dir}")
+    else:
+        print("  [ACTION REQUIRED] Activate the virtualenv first.")
+        print("  Run this command in your terminal, then continue with Option A:\n")
+        print(f"      {activate_cmd}\n")
+        print("  (Not needed if you are running this wizard via")
+        print("   scripts/install-meta-chip.sh - it activates the venv for you.)")
+
+    print("\nOption A: Using modern 'bitbake-setup' (Automated)")
+    print("  1. Initialize your workspace pointing to the generated template:")
     print(f"       bitbake-setup init {json_path}")
-    print("  3. Build the minimal image:")
+    print("  2. Build the minimal image:")
     print("       bitbake chip-image-minimal")
+
     print("\nOption B: Using traditional OpenEmbedded environment")
     print("  1. Clone poky and meta-openembedded alongside meta-chip")
     print("  2. source poky/oe-init-build-env build")
