@@ -7,7 +7,8 @@ IMAGE_INSTALL = " \
     kernel-modules \
     kernel-devicetree \
     chip-boot-scr \
-    linux-firmware-rtl8723 \
+    linux-firmware-rtl8723bs \
+    linux-firmware-rtl8723bt
     mtd-utils \
     mtd-utils-ubifs \
     e2fsprogs \

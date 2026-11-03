@@ -18,7 +18,49 @@ This repository provides the Board Support Package (BSP) layer and **`bitbake-se
 
 ---
 
-## 2. Quick Start: Interactive Setup Assistant
+## 2. Quick Start: One-Shot Linux Bootstrap
+
+On a **Linux host** you can fetch the layer, install the Yocto host toolchain, create a virtualenv with `bitbake-setup`, and jump straight into the configuration wizard with a single command:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Prof256/meta-chip-6.0/main/scripts/install-meta-chip.sh)
+```
+
+For more control, download and run it directly:
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/Prof256/meta-chip-6.0/main/scripts/install-meta-chip.sh
+chmod +x install-meta-chip.sh
+./install-meta-chip.sh --help
+```
+
+Useful options:
+
+| Option | Purpose |
+|---|---|
+| `-d, --dir DIR` | Install directory (default `~/meta-chip-6.0`) |
+| `-b, --branch REF` | Git branch/tag/commit (default `main`) |
+| `-r, --repo URL` | Alternate repository URL |
+| `--check` | Read-only diagnostics; changes nothing |
+| `--no-deps` | Skip system package installation |
+| `--yes` | Non-interactive package installation |
+| `--no-configure` | Bootstrap only, do not run the wizard |
+| `--with-init` | Also run `bitbake-setup init` after configuring |
+| `-- ARGS...` | Forwarded to [`scripts/setup-chip.py`](scripts/setup-chip.py:1) |
+
+Anything after `--` is passed to the configuration script, e.g.:
+
+```bash
+./install-meta-chip.sh --yes -- --profile 1 --nand 1 --branch 1
+```
+
+Supported package managers: **apt** (Debian/Ubuntu/Mint), **dnf/yum** (Fedora/RHEL/Rocky), **pacman** (Arch/Manjaro), **zypper** (openSUSE). Other distributions work with `--no-deps` plus manual host packages (see Section 5).
+
+The installer checks `/bin/sh`, UTF-8 locale, `unshare`, and free disk space (a build needs 50 GB minimum, 100 GB+ recommended) before it does anything destructive, and it always asks before invoking `sudo`.
+
+---
+
+## 3. Interactive Setup Assistant
 
 We provide an interactive wizard script to guide you through selecting your preferred distribution, storage target, and hardware options:
 
@@ -45,7 +87,7 @@ We provide an interactive wizard script to guide you through selecting your pref
 
 ---
 
-## 3. Using Modern `bitbake-setup`
+## 4. Using Modern `bitbake-setup`
 
 `bitbake-setup` is the new configuration-driven workspace tool in modern Yocto.
 
@@ -71,7 +113,7 @@ bitbake chip-image-minimal
 
 ---
 
-## 4. Manual / Traditional Build Setup
+## 5. Manual / Traditional Build Setup
 
 If you prefer using the traditional `oe-init-build-env` workflow:
 
@@ -105,7 +147,7 @@ If you prefer using the traditional `oe-init-build-env` workflow:
 
 ---
 
-## 5. Serial Console & Pinout
+## 6. Serial Console & Pinout
 
 To monitor boot output, connect a 3.3V USB-to-UART serial adapter to **Header U14**:
 
@@ -120,7 +162,7 @@ Baud rate: **`115200 8N1`**
 
 ---
 
-## 6. Flashing to C.H.I.P. via FEL Mode
+## 7. Flashing to C.H.I.P. via FEL Mode
 
 1. Connect a jumper between **U14 Pin 7 (FEL)** and **U14 Pin 1 (GND)**.
 2. Plug the C.H.I.P. into your host PC via micro-USB.
