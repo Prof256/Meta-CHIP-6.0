@@ -378,14 +378,33 @@ setup_venv() {
         if [[ -f "${dir}/bitbake/bin/bitbake-setup" ]]; then
             ok "Falling back to in-tree bitbake from the layer checkout."
         else
-            warn "bitbake-setup unavailable. You can still use the manual workflow (README section 4)."
+            warn "bitbake-setup unavailable. You can still use the manual workflow (README Section 5)."
         fi
     fi
 }
 
-activate_hint() {
-    printf '\n%s%s%s\n' "${C_BOLD}" "To use bitbake-setup in this shell:" "${C_RESET}"
-    printf '    source %s/bin/activate\n' "${VENV_DIR}"
+# Activate the virtualenv inside this script so the configuration wizard and
+# anything it launches inherit the venv's PATH/PYTHONHOME.
+# NOTE: a child process cannot mutate the parent shell's environment, so this
+# does not persist in the user's interactive shell - it affects this run only.
+activate_venv() {
+    local venv="$1"
+    local activate_script="${venv}/bin/activate"
+
+    if [[ ! -f "${activate_script}" ]]; then
+        die "Virtualenv activation script not found: ${activate_script}"
+    fi
+
+    # shellcheck disable=SC1090,SC1091
+    . "${activate_script}"
+    hash -r 2>/dev/null || true
+
+    # Guard against a broken venv leaking the host interpreter back in.
+    export VIRTUAL_ENV="${venv}"
+    export PATH="${venv}/bin:${PATH}"
+
+    info "Activated virtualenv: ${VIRTUAL_ENV}"
+    info "python3 -> $(command -v python3)"
 }
 
 # ----------------------------------------------------------------------------
@@ -470,7 +489,7 @@ main() {
     chmod +x "${INSTALL_DIR}/scripts/"*.sh "${INSTALL_DIR}/scripts/"*.py 2>/dev/null || true
 
     ok "All files are in place at ${INSTALL_DIR}"
-    activate_hint
+    activate_venv "${VENV_DIR}"
     configure "${INSTALL_DIR}"
 }
 

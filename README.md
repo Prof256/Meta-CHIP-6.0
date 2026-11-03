@@ -58,6 +58,8 @@ Supported package managers: **apt** (Debian/Ubuntu/Mint), **dnf/yum** (Fedora/RH
 
 The installer checks `/bin/sh`, UTF-8 locale, `unshare`, and free disk space (a build needs 50 GB minimum, 100 GB+ recommended) before it does anything destructive, and it always asks before invoking `sudo`.
 
+The Python virtualenv at `~/.yocto-chip-venv` is **activated automatically** inside the installer, so the wizard — and any `bitbake`/`bitbake-setup` command it launches — already runs with the correct interpreter and `PATH`. There is nothing to `source` before running it. Because a child process cannot alter your shell's environment, a fresh terminal later still needs activation, but the installer never asks you to do it as a prerequisite.
+
 ---
 
 ## 3. Interactive Setup Assistant
@@ -91,10 +93,12 @@ We provide an interactive wizard script to guide you through selecting your pref
 
 `bitbake-setup` is the new configuration-driven workspace tool in modern Yocto.
 
-### Step 1: Install `bitbake-setup`
+> If you ran the Section 2 bootstrap installer, `bitbake-setup` is already installed in `~/.yocto-chip-venv` and was activated during that run. Skip to Step 2.
+
+### Step 1: Install `bitbake-setup` (only if you skipped the installer)
 ```bash
-python3 -m venv ~/yocto-venv
-source ~/yocto-venv/bin/activate
+python3 -m venv ~/.yocto-chip-venv
+. ~/.yocto-chip-venv/bin/activate
 pip install bitbake-setup
 ```
 
