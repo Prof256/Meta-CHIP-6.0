@@ -24,7 +24,7 @@ CONFIGURATIONS = {
         "description": "Standard Yocto reference distro targeting the onboard NAND flash with UBI/UBIFS.",
         "distro": "poky",
         "storage": "nand",
-        "fragments": ["machine/chip", "distro/poky", "storage/chip-nand"],
+        "fragments": ["meta-chip/machine/chip", "distro/poky", "meta-chip/storage/chip-nand"],
     },
     "2": {
         "id": "chip-poky-sd-usb",
@@ -32,7 +32,7 @@ CONFIGURATIONS = {
         "description": "Standard Yocto reference distro configured for external USB drive or microSD breakout.",
         "distro": "poky",
         "storage": "sd-usb",
-        "fragments": ["machine/chip", "distro/poky", "storage/chip-sd-usb"],
+        "fragments": ["meta-chip/machine/chip", "distro/poky", "meta-chip/storage/chip-sd-usb"],
     },
     "3": {
         "id": "chip-nodistro-nand",
@@ -40,7 +40,7 @@ CONFIGURATIONS = {
         "description": "Ultra-lightweight distroless build with minimal footprint for NAND flash.",
         "distro": "nodistro",
         "storage": "nand",
-        "fragments": ["machine/chip", "storage/chip-nand"],
+        "fragments": ["meta-chip/machine/chip", "meta-chip/storage/chip-nand"],
     },
     "4": {
         "id": "chip-nodistro-sd-usb",
@@ -48,7 +48,7 @@ CONFIGURATIONS = {
         "description": "Ultra-lightweight distroless build configured for USB or microSD card.",
         "distro": "nodistro",
         "storage": "sd-usb",
-        "fragments": ["machine/chip", "storage/chip-sd-usb"],
+        "fragments": ["meta-chip/machine/chip", "meta-chip/storage/chip-sd-usb"],
     },
 }
 

@@ -74,9 +74,9 @@
           "meta-chip"
         ],
         "oe-fragments": [
-          "machine/chip",
+          "meta-chip/machine/chip",
           "distro/poky",
-          "storage/chip-nand"
+          "meta-chip/storage/chip-nand"
         ]
       },
       {
@@ -93,9 +93,9 @@
           "meta-chip"
         ],
         "oe-fragments": [
-          "machine/chip",
+          "meta-chip/machine/chip",
           "distro/poky",
-          "storage/chip-sd-usb"
+          "meta-chip/storage/chip-sd-usb"
         ]
       },
       {
@@ -108,8 +108,8 @@
           "meta-chip"
         ],
         "oe-fragments": [
-          "machine/chip",
-          "storage/chip-nand"
+          "meta-chip/machine/chip",
+          "meta-chip/storage/chip-nand"
         ]
       },
       {
@@ -122,8 +122,8 @@
           "meta-chip"
         ],
         "oe-fragments": [
-          "machine/chip",
-          "storage/chip-sd-usb"
+          "meta-chip/machine/chip",
+          "meta-chip/storage/chip-sd-usb"
         ]
       }
     ]
